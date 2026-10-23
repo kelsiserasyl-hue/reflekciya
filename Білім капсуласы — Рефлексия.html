@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="kk"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Білім капсуласы — Рефлексия</title>
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#020816}
+body{font-family:"Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif;color:#fff3d6}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;overflow:hidden;
+background:radial-gradient(ellipse at 14% 22%,rgba(0,200,190,.3),transparent 45%),radial-gradient(ellipse at 88% 78%,rgba(41,121,255,.32),transparent 50%),radial-gradient(ellipse at 50% 50%,#0a2a5c,#030a1c 80%)}
+canvas{position:absolute;left:0;top:0;width:1600px;height:900px;pointer-events:none}
+#fx{z-index:7}
+.a{position:absolute;left:0;width:1600px;text-align:center;transition:opacity 1.2s;z-index:6}
+#t1{top:12px;font-size:56px;font-weight:700;letter-spacing:1px;background:linear-gradient(180deg,#fff6c9,#e8b840 55%,#9a6a14);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 6px rgba(0,0,0,.7))}
+#t2{top:84px;font-size:34px;font-style:italic;color:#bff7ee;letter-spacing:4px;text-shadow:0 0 14px rgba(0,229,200,.6)}
+#t2:before,#t2:after{content:"◆";color:#e8b840;margin:0 18px;font-size:18px;font-style:normal}
+.px{position:absolute;left:760px;width:580px;text-align:center;transition:opacity 1s;z-index:6}
+#h1{top:664px;font-size:34px;line-height:1.3;color:#ffe9a8;text-shadow:0 2px 8px #000}
+#h2{top:752px;font-size:23px;color:#9fe9df;line-height:1.35}
+#main{position:absolute;left:1050px;top:818px;transform:translateX(-50%);z-index:6;transition:opacity 1s}
+#pg{top:160px;font-size:32px;color:#ffe9a8;text-shadow:0 2px 8px #000}
+#bar{width:420px;height:9px;margin:10px auto 8px;border-radius:5px;background:#10305a;box-shadow:inset 0 1px 3px #000;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#00e5c8,#ffd978);transition:width .8s;box-shadow:0 0 12px #ffd978}
+#pi{font-size:22px;color:#9fe9df}
+[data-m=home] .pu,[data-m=play] .hu,[data-m=fin] .hu,[data-m=fin] .pu,[data-m=play] #main,[data-m=fin] #main,[data-m=home] .pu{opacity:0;pointer-events:none}
+#orb{position:absolute;left:0;top:0;z-index:2;transition:opacity 1.5s}
+#orb ellipse{fill:none;stroke:#7fe9ff;stroke-width:1.5;stroke-dasharray:3 9;opacity:.4}
+#arc{position:absolute;left:0;top:0;z-index:2;opacity:0;transition:opacity 2s}#arc.on{opacity:1}
+#earth{position:absolute;left:230px;top:270px;width:400px;height:400px;border-radius:50%;z-index:3;overflow:hidden;background:linear-gradient(#1a7ad0,#0a3d7c);transition:transform 2.6s cubic-bezier(.3,.7,.2,1);
+box-shadow:0 0 50px 8px rgba(90,180,255,.5),0 0 140px 30px rgba(40,110,255,.3)}
+#earth.fin{transform:translate(370px,540px) scale(2.2)}
+#earth div{position:absolute;inset:0;background-size:800px 400px;background-repeat:repeat-x}
+#land{animation:mv 90s linear infinite}#clo{animation:mv 55s linear infinite;opacity:.8}
+@keyframes mv{to{background-position-x:-800px}}
+#earth:after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 26%,rgba(255,255,255,.3),transparent 36%),radial-gradient(circle at 70% 64%,transparent 38%,rgba(0,4,18,.88) 86%);box-shadow:inset 0 0 38px 4px rgba(130,205,255,.6)}
+#halo{position:absolute;left:0;top:0;border-radius:50%;z-index:4;pointer-events:none;background:radial-gradient(circle,var(--c1) 0,transparent 62%);transition:opacity 1s}
+#cap{position:absolute;left:0;top:0;width:220px;height:360px;perspective:900px;z-index:5;cursor:pointer;outline:none;--c1:#4aa3ff;--c2:#0b3a9c;transition:filter 1s}
+#cap[data-l="1"]{--c1:#7ffcf0;--c2:#0a8f9c}#cap[data-l="2"]{--c1:#fff0a0;--c2:#16b6b0}#cap[data-l="3"]{--c1:#fff2a8;--c2:#10b36a}
+#csv{display:block;width:220px;height:360px;overflow:visible}
+#csv *{transition:transform .95s cubic-bezier(.3,.8,.3,1),opacity .9s}
+#cap.open{cursor:default}#cap.open #top{transform:translateY(-82px)}#cap.open #bot{transform:translateY(82px)}
+#cap.open #core{transform:scale(1.5)}#cap.open #beam{opacity:.7}
+#core,#beam{transform-box:fill-box;transform-origin:center}
+#beam{opacity:0}
+.ln{opacity:0}#cap[data-l="2"] .ln,#cap[data-l="3"] .ln{opacity:.85}
+#cap.max #core{animation:mx 1.8s ease-in-out infinite alternate}
+@keyframes mx{to{transform:scale(1.22)}}
+#cap.max .orn{stroke:#fff6c0;filter:drop-shadow(0 0 5px #ffe08a)}
+#sh{opacity:0}#cap.max #sh{opacity:1;animation:sh 2.6s linear infinite}
+@keyframes sh{from{transform:translateY(-380px)}to{transform:translateY(380px)}}
+#cap:not(.open):not(.off) #core{animation:pl 3s ease-in-out infinite}
+@keyframes pl{50%{transform:scale(1.12)}}
+#card{position:absolute;left:60px;top:190px;width:880px;padding:56px 70px 48px;text-align:center;border-radius:26px;z-index:10;display:none;
+background:linear-gradient(160deg,rgba(24,90,170,.78),rgba(6,32,78,.88));backdrop-filter:blur(10px);border:6px solid #d9a22b;
+box-shadow:0 0 0 3px #7a5416,0 0 60px rgba(255,210,100,.4),0 40px 60px rgba(0,0,0,.65),inset 0 0 50px rgba(0,229,200,.25),inset 0 3px 0 rgba(255,255,255,.35)}
+#card.on{display:block;animation:cd .8s cubic-bezier(.2,.9,.2,1)}
+@keyframes cd{from{transform:perspective(900px) rotateY(-50deg) scale(.7);opacity:0}}
+#card:before{content:"";position:absolute;inset:12px;border:2px dashed rgba(95,242,224,.7);border-radius:16px;pointer-events:none}
+#card svg{position:absolute;width:58px;height:58px;color:#ffd978;filter:drop-shadow(0 0 6px #ffd978)}
+#qn{font-size:26px;letter-spacing:3px;color:#5ff2e0;margin-bottom:14px}
+#qt{margin:0 0 36px;font-size:42px;line-height:1.38;color:#fff7dc;text-shadow:0 2px 6px rgba(0,0,0,.7)}
+.btn{font:inherit;font-size:26px;padding:14px 46px;border-radius:40px;border:3px solid #7a5416;cursor:pointer;color:#3a2400;font-weight:700;background:linear-gradient(#fff1a8,#e0a92f 60%,#a8741a);box-shadow:0 9px 0 #5b3a08,0 16px 22px rgba(0,0,0,.5),inset 0 2px 3px #fff8;transition:transform .15s,box-shadow .15s}
+.btn:hover{filter:brightness(1.08)}.btn:active{transform:translateY(7px);box-shadow:0 2px 0 #5b3a08,0 6px 10px rgba(0,0,0,.5),inset 0 2px 3px #fff8}
+.fu{position:absolute;left:300px;width:1000px;text-align:center;opacity:0;pointer-events:none;transition:opacity 2s;z-index:8}
+#stage.show .fu{opacity:1;pointer-events:auto}
+#ft{top:250px;margin:0;font-size:54px;line-height:1.38;font-weight:700;background:linear-gradient(180deg,#fff9d8,#f0c24a 70%,#c58a1c);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 8px rgba(0,0,0,.85))}
+#th{top:512px;font-size:32px;color:#bff7ee;text-shadow:0 2px 8px #000}
+#rs{top:790px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01s!important}}
+</style></head><body>
+<div id="stage" data-m="home">
+<canvas id="sk" width="1600" height="900"></canvas>
+<svg id="orb" width="1600" height="900"><ellipse cx="430" cy="470" rx="620" ry="90"/></svg>
+<svg id="arc" width="1600" height="900"><ellipse cx="430" cy="470" rx="330" ry="130" fill="none" stroke="#ffe08a" stroke-width="2" stroke-dasharray="14 10" opacity=".7"/><ellipse cx="430" cy="470" rx="350" ry="146" fill="none" stroke="#5ff2e0" stroke-width="1.5" opacity=".6"/></svg>
+<div id="earth"><div id="land"></div><div id="clo"></div></div>
+<div id="halo"></div>
+<div id="cap" role="button" tabindex="0" aria-label="Білім капсуласы">
+<svg id="csv" viewBox="0 0 220 360"><defs>
+<linearGradient id="mt" x1="0" x2="1"><stop offset="0" stop-color="#16304f"/><stop offset=".22" stop-color="#e6f2ff"/><stop offset=".45" stop-color="#8fb0d0"/><stop offset=".75" stop-color="#34567a"/><stop offset="1" stop-color="#0d2140"/></linearGradient>
+<linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1a8"/><stop offset=".5" stop-color="#d9a22b"/><stop offset="1" stop-color="#8a5f12"/></linearGradient>
+<radialGradient id="cg"><stop offset="0" style="stop-color:#fff"/><stop offset=".4" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></radialGradient>
+<linearGradient id="gl" x1="0" x2="1"><stop offset="0" stop-color="#5ff2e0" stop-opacity=".1"/><stop offset=".4" stop-color="#bff7ff" stop-opacity=".55"/><stop offset="1" stop-color="#0b3a9c" stop-opacity=".2"/></linearGradient>
+<linearGradient id="wv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe08a" stop-opacity="0"/><stop offset=".5" stop-color="#fff0a8" stop-opacity=".75"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></linearGradient>
+<clipPath id="cp"><path d="M20 90A90 90 0 0 1 200 90V270A90 90 0 0 1 20 270Z"/></clipPath></defs>
+<ellipse id="beam" cx="110" cy="180" rx="95" ry="64" fill="url(#cg)"/>
+<g id="top"><path d="M20 180V90A90 90 0 0 1 200 90V180Z" fill="url(#mt)"/><rect x="20" y="166" width="180" height="14" fill="url(#gd)"/><rect x="44" y="36" width="18" height="120" rx="9" fill="#fff" opacity=".22"/><path d="M82 24Q110 14 138 24V150H82Z" fill="url(#gl)" stroke="#d9a22b" stroke-width="2.5"/>
+<g class="orn" fill="none" stroke="#ffd978" stroke-width="3.5" stroke-linecap="round"><g transform="translate(60 38)"><path id="hn" d="M50 76C26 76 16 52 29 39C40 29 57 37 52 49C50 55 42 54 43 49"/><path d="M50 76C26 76 16 52 29 39C40 29 57 37 52 49C50 55 42 54 43 49" transform="translate(100 0) scale(-1 1)"/></g><circle cx="110" cy="146" r="11"/><path d="M110 135V157M100.5 140.5L119.5 151.5M119.5 140.5L100.5 151.5"/></g>
+<path class="ln" d="M30 150V100M190 150V100" stroke="#5ff2e0" stroke-width="3" stroke-linecap="round"/></g>
+<g id="bot"><path d="M20 180V270A90 90 0 0 0 200 270V180Z" fill="url(#mt)"/><rect x="20" y="180" width="180" height="14" fill="url(#gd)"/><rect x="44" y="204" width="18" height="120" rx="9" fill="#fff" opacity=".22"/><path d="M82 210V336Q110 346 138 336V210Z" fill="url(#gl)" stroke="#d9a22b" stroke-width="2.5"/>
+<g class="orn" fill="none" stroke="#ffd978" stroke-width="3.5" stroke-linecap="round"><g transform="translate(60 322) scale(1 -1)"><path d="M50 76C26 76 16 52 29 39C40 29 57 37 52 49C50 55 42 54 43 49"/><path d="M50 76C26 76 16 52 29 39C40 29 57 37 52 49C50 55 42 54 43 49" transform="translate(100 0) scale(-1 1)"/></g><circle cx="110" cy="214" r="11"/><path d="M110 203V225M100.5 208.5L119.5 219.5M119.5 208.5L100.5 219.5"/></g>
+<path class="ln" d="M30 260V210M190 260V210" stroke="#5ff2e0" stroke-width="3" stroke-linecap="round"/></g>
+<rect id="sh" x="10" y="0" width="200" height="120" fill="url(#wv)" clip-path="url(#cp)" style="transform-box:view-box"/>
+<g id="core"><circle cx="110" cy="180" r="46" fill="none" stroke="url(#gd)" stroke-width="9"/><circle cx="110" cy="180" r="38" fill="url(#cg)"/><ellipse cx="98" cy="164" rx="16" ry="8" fill="#fff" opacity=".55" transform="rotate(-30 98 164)"/></g>
+</svg></div>
+<div class="a" id="t1">Google-дан табылмайтын физика</div>
+<div class="a" id="t2">Рефлексия</div>
+<div class="px hu" id="h1">Бүгінгі шебер сынып сізге не берді? Өз ойыңызбен бөлісіңіз!</div>
+<div class="px hu" id="h2">Капсуланы басып, сұраққа жауап беріңіз. Әр ой — болашаққа қосылған үлес.</div>
+<button class="btn" id="main">Бастау</button>
+<div class="px pu" id="pg" style="top:158px"><div id="pgt">Ой бөлісу кезеңі: 0 / 5</div><div id="bar"><i></i></div><div id="pi">Капсуланы басыңыз — келесі сұрақты ашыңыз.</div></div>
+<div id="card"><svg style="left:12px;top:12px" viewBox="0 0 100 100"></svg><svg style="right:12px;top:12px;transform:scaleX(-1)" viewBox="0 0 100 100"></svg><svg style="left:12px;bottom:12px;transform:scaleY(-1)" viewBox="0 0 100 100"></svg><svg style="right:12px;bottom:12px;transform:scale(-1)" viewBox="0 0 100 100"></svg><div id="qn"></div><p id="qt"></p><button class="btn" id="nx">Келесі сұрақ</button></div>
+<p class="fu" id="ft">Бүгінгі ізденісіңіз — ертеңгі ұрпақтың мүмкіндігі. Білімді тәжірибеге айналдырып, болашаққа жол ашайық!</p>
+<div class="fu" id="th">Назарларыңызға рақмет!</div>
+<button class="btn fu" id="rs" style="left:700px;width:200px;padding:14px 0">Қайта бастау</button>
+<canvas id="fx" width="1600" height="900"></canvas>
+</div>
+<script>
+const Q=["Бүгінгі шебер сыныпта қандай жаңа идея немесе әдіс үйрендіңіз?","ІЗДЕН әдістемесінің қай кезеңін өз сабағыңызда бірінші болып қолданар едіңіз?","Жасанды интеллект ұсынған жауаптың дұрыстығын тексеру үшін қандай әрекеттер жасау қажет деп ойлайсыз?","Әдістемені күнделікті сабақта қолдануға не көмектеседі, ал қандай кедергілер болуы мүмкін?","Ертеңгі сабағыңызда өзгерткіңіз келетін бір әрекет қандай?"];
+const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const stg=$('#stage'),cap=$('#cap'),csv=$('#csv'),halo=$('#halo'),card=$('#card'),earth=$('#earth'),sk=$('#sk').getContext('2d'),fx=$('#fx').getContext('2d');
+let state='home',n=0,T=0,a=0,F=0,lvl=0,P=[],last=performance.now(),cxp=1050,cyp=470,earthUp=0,shown=0;
+const H='M50 76C26 76 16 52 29 39C40 29 57 37 52 49C50 55 42 54 43 49';
+document.querySelectorAll('#card svg').forEach(e=>e.innerHTML=`<g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="${H}"/><path d="${H}" transform="translate(100 0) scale(-1 1)"/></g>`);
+const svgU=s=>'url("data:image/svg+xml,'+encodeURIComponent(s)+'")';
+$('#land').style.backgroundImage=svgU('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><path d="M60 120C90 70 170 60 200 100C230 140 210 190 170 230C150 260 100 250 80 210C60 180 40 150 60 120Z" fill="#2e8b57"/><path d="M110 150C130 130 170 140 170 170C170 200 130 210 115 190Z" fill="#c9a45c"/><path d="M300 90C340 60 420 70 450 110C480 150 470 200 430 220C410 260 380 330 340 300C320 250 290 200 300 150Z" fill="#3a9a5b"/><path d="M340 150C370 130 420 150 410 190C400 220 350 220 340 190Z" fill="#d2b06a"/><path d="M520 140C560 110 650 110 700 150C740 190 720 250 660 260C600 270 540 230 520 190Z" fill="#4aa860"/><path d="M570 280C600 270 650 290 640 320C620 345 580 340 570 310Z" fill="#2e8b57"/><ellipse cx="400" cy="8" rx="420" ry="30" fill="#eef7ff"/><ellipse cx="400" cy="395" rx="420" ry="30" fill="#eef7ff"/></svg>');
+$('#clo').style.backgroundImage=svgU('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"><defs><filter id="b"><feGaussianBlur stdDeviation="9"/></filter></defs><g fill="#fff" opacity=".7" filter="url(#b)"><ellipse cx="120" cy="90" rx="90" ry="16"/><ellipse cx="300" cy="190" rx="110" ry="14"/><ellipse cx="480" cy="110" rx="80" ry="15"/><ellipse cx="640" cy="250" rx="100" ry="16"/><ellipse cx="220" cy="300" rx="90" ry="14"/><ellipse cx="560" cy="340" rx="80" ry="12"/></g></svg>');
+const stars=Array.from({length:170},()=>({x:Math.random()*1600,y:Math.random()*900,r:Math.random()*1.5+.3,p:Math.random()*6}));
+function lv(){return n==0?0:n<=2?1:n<=4?2:3}
+function upd(){const l=lv();if(l!=lvl)pulse();lvl=l;cap.dataset.l=l;$('#pgt').textContent=`Ой бөлісу кезеңі: ${n} / 5`;$('#bar i').style.width=n/5*100+'%';
+ cap.style.filter=`drop-shadow(0 0 ${10+n*9}px var(--c1))`;halo.style.width=halo.style.height=(300+n*60)+'px'}
+function pulse(){csv.animate([{filter:'brightness(1)'},{filter:'brightness(1.5)'},{filter:'brightness(1)'}],{duration:1400})}
+function burst(x,y,k,sp){if(RM)k=Math.ceil(k/4);for(let i=0;i<k;i++){const t=Math.random()*6.283,s=(Math.random()+.3)*sp;P.push({x,y,vx:Math.cos(t)*s,vy:Math.sin(t)*s,l:1,d:.008+Math.random()*.01,r:1+Math.random()*2.4,c:Math.random()<.5?'#ffe08a':'#5ff2e0'})}}
+function go(){if(state!=='closed')return;state='opening';cap.classList.add('open');burst(cxp,cyp,50,2.2);
+ setTimeout(()=>{$('#qn').textContent=(n+1)+'-сұрақ';$('#qt').textContent=Q[n];$('#nx').textContent=n==4?'Қорытындыны ашу':'Келесі сұрақ';card.classList.add('on');state='open'},980)}
+cap.onclick=go;cap.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();go()}};
+$('#main').onclick=()=>{if(state!=='home')return;state='closed';stg.dataset.m='play';upd()};
+$('#nx').onclick=()=>{if(state!=='open')return;state='closing';card.classList.remove('on');cap.classList.remove('open');n++;upd();burst(cxp,cyp,40,2);
+ setTimeout(()=>{if(n>=5)finale();else state='closed'},1050)};
+function finale(){state='fin';F=T;earthUp=0;shown=0;stg.dataset.m='fin';cap.classList.add('max','off')}
+function showMsg(){shown=1;stg.classList.add('show')}
+$('#rs').onclick=()=>{if(!shown)return;state='home';n=0;a=0;P=[];lvl=0;stg.classList.remove('show');stg.dataset.m='home';earth.classList.remove('fin');$('#arc').classList.remove('on');cap.classList.remove('max','off','open');card.classList.remove('on');cap.style.opacity=1;upd()};
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+function loop(ts){const dt=Math.min(.05,(ts-last)/1e3);last=ts;T+=dt;
+ sk.clearRect(0,0,1600,900);sk.fillStyle='#dff';stars.forEach(s=>{sk.globalAlpha=RM?.6:.35+.45*Math.sin(T*.8+s.p);sk.beginPath();sk.arc(s.x,s.y,s.r,0,7);sk.fill()});
+ let x,y,s=.8,z=5,op=1,rot=RM?0:Math.sin(T*.5)*24;
+ if(state!=='fin'){const tg=(state==='closed'||state==='home')&&!RM?.33*Math.sin(T*.35):0;a+=(tg-a)*Math.min(1,dt*2.5);x=430+620*Math.cos(a);y=470+90*Math.sin(a)}
+ else{const e=T-F;x=1050;y=470;
+  if(RM){op=e<1?1:0;if(e>.5&&!earthUp){earthUp=1;earth.classList.add('fin')}if(e>1.5&&!shown)showMsg()}
+  else{
+   if(e<1.4){}
+   else if(e<3.2){const u=ease((e-1.4)/1.8);x=1050-290*u;s=.8-.3*u}
+   else if(e<9.2){const th=(e-3.2)/6*2*Math.PI;x=430+330*Math.cos(th);y=470+130*Math.sin(th);s=.5+.1*Math.sin(th);z=Math.sin(th)>0?5:1;rot=th*50;$('#arc').classList.add('on')}
+   else if(e<12){const u=ease((e-9.2)/2.8);x=760+1040*u;y=470-670*u;s=.5*(1-.88*u);op=1-Math.max(0,(u-.6)/.4);rot=Math.PI*2*50+u*200}
+   else op=0;
+   if(e>1.4&&e<12.2){burst(x,y,3,.7);P.slice(-3).forEach(p=>{p.d=.004;p.vx*=.3;p.vy*=.3})}
+   if(e>11&&!earthUp){earthUp=1;earth.classList.add('fin');$('#arc').classList.remove('on')}
+   if(e>12.6&&!shown)showMsg()}}
+ cxp=x;cyp=y;cap.style.transform=`translate(${x-110}px,${y-180}px) scale(${s})`;cap.style.zIndex=z;cap.style.opacity=op;csv.style.transform=`rotateY(${rot}deg)`;
+ const hw=parseFloat(halo.style.width)||300;halo.style.transform=`translate(${x-hw/2}px,${y-hw/2}px)`;halo.style.opacity=(state==='home'?.15:.2+n*.08)*op*(z==1?0:1);
+ if(!RM&&n>0&&state!=='fin'&&Math.random()<(lvl>=2?.7:.25)){const t=Math.random()*6.283,r=90+Math.random()*70*s;P.push({x:x+Math.cos(t)*r*s*1.2,y:y+Math.sin(t)*r*s*1.6,vx:Math.cos(t)*.3,vy:-.4-Math.random()*.4,l:1,d:.012,r:1+Math.random()*2,c:lvl==3?'#7dffc0':'#ffe08a'})}
+ fx.clearRect(0,0,1600,900);fx.globalCompositeOperation='lighter';P=P.filter(p=>p.l>0).slice(-700);
+ P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.l-=p.d;fx.globalAlpha=Math.max(p.l,0);fx.fillStyle=p.c;fx.shadowColor=p.c;fx.shadowBlur=8;fx.beginPath();fx.arc(p.x,p.y,p.r,0,7);fx.fill()});fx.globalCompositeOperation='source-over';fx.shadowBlur=0;
+ requestAnimationFrame(loop)}
+function fit(){stg.style.transform=`translate(-50%,-50%) scale(${Math.min(innerWidth/1600,innerHeight/900)})`}
+addEventListener('resize',fit);fit();upd();requestAnimationFrame(ts=>{last=ts;loop(ts)});
+</script></body></html>
